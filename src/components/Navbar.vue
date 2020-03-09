@@ -1,37 +1,12 @@
 <template>
-  <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+  <nav v-if="user.loggedIn">
     <div class="container">
-      <router-link to="/" class="navbar-brand">Vue Firebase Auth</router-link>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto"></ul>
-        <ul class="navbar-nav ml-auto">
-          <template v-if="user.loggedIn">
-            <div class="nav-item">{{user.data.displayName}}</div>
-            <li class="nav-item">
-              <a class="nav-link" @click.prevent="signOut">Sign out</a>
-            </li>
-          </template>
-          <template v-else>
-            <li class="nav-item">
-              <router-link to="login" class="nav-link">Login</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="register" class="nav-link">Register</router-link>
-            </li>
-          </template>
-        </ul>
-      </div>
+      <template v-if="user.loggedIn">
+        <div class="nav-item" @click.prevent="ys">{{ user.data.uid }}</div>
+        <li class="nav-item">
+          <a class="nav-link" @click.prevent="signOut">Déconnexion</a>
+        </li>
+      </template>
     </div>
   </nav>
 </template>
@@ -52,9 +27,12 @@ export default {
         .signOut()
         .then(() => {
           this.$router.replace({
-            name: "home"
+            name: "login"
           });
         });
+    },
+    ys() {
+      console.log(this.user.data.uid);
     }
   }
 };
