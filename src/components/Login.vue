@@ -58,6 +58,11 @@ export default {
       error: null
     };
   },
+  mounted() {
+    if (this.$store.getters.user.data != null) {
+      this.$router.replace({ name: "Dashboard" });
+    }
+  },
   methods: {
     submit() {
       firebase
