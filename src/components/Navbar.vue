@@ -2,7 +2,7 @@
   <nav v-if="user.loggedIn">
     <div class="container">
       <template v-if="user.loggedIn">
-        <div class="nav-item" @click.prevent="ys">{{ user.data.uid }}</div>
+        <div class="nav-item">Bonjour, {{ username }}</div>
         <li class="nav-item">
           <a class="nav-link" @click.prevent="signOut">Déconnexion</a>
         </li>
@@ -20,6 +20,27 @@ export default {
       user: "user"
     })
   },
+  data() {
+    return {
+      username: ""
+    };
+  },
+  updated() {
+    const { currentUser } = firebase.auth();
+    if (currentUser) {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(currentUser.uid)
+        .get()
+        .then(doc => {
+          this.username = doc.data().username;
+        })
+        .catch(function(error) {
+          console.log("Error getting document:", error);
+        });
+    }
+  },
   methods: {
     signOut() {
       firebase
@@ -30,9 +51,6 @@ export default {
             name: "login"
           });
         });
-    },
-    ys() {
-      console.log(this.user.data.uid);
     }
   }
 };

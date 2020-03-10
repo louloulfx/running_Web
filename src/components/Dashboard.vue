@@ -3,9 +3,15 @@
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header">Dashboard</div>
           <div class="card-body">
-            <div v-if="user" class="alert alert-success" role="alert">You are logged in!</div>
+            <div
+              v-for="(user, index) in users"
+              :key="index"
+              class="alert alert-success"
+              role="alert"
+            >
+              {{ user.username }}
+            </div>
           </div>
         </div>
       </div>
@@ -14,13 +20,32 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import firebase from "firebase";
 export default {
   computed: {
-    // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
       user: "user"
     })
   },
-  mounted() {}
+  data() {
+    return {
+      username: "",
+      users: []
+    };
+  },
+  created() {
+    firebase
+      .firestore()
+      .collection("users")
+      .get()
+      .then(snapshot => {
+        snapshot.docs.map(doc => {
+          this.users.push(doc.data());
+        });
+      })
+      .catch(function(error) {
+        console.log("Error getting document:", error);
+      });
+  }
 };
 </script>
