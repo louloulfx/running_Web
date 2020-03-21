@@ -1,7 +1,9 @@
 <template>
   <div class="container">
-    <div class>
+    <img src="../assets/logo.png" />
+    <div class="login-container">
       <div class>Administation</div>
+      <img src="../assets/bonhommequicours-vert.png" />
       <div class>
         <div v-if="error">{{error}}</div>
         <form action="#" @submit.prevent="submit">
@@ -23,7 +25,7 @@
           </div>
 
           <div class>
-            <label for="password" class>Password</label>
+            <label for="password" class>Mot de passe</label>
 
             <div class>
               <input
@@ -37,7 +39,7 @@
             </div>
           </div>
           <div class="col-md-8 offset-md-4">
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-primary">Se connecter</button>
           </div>
         </form>
       </div>
@@ -79,3 +81,13 @@ export default {
   }
 };
 </script>
+<style scoped>
+.login-container {
+  border: 1px solid black;
+}
+.container {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+}
+</style>
