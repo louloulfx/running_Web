@@ -2,10 +2,11 @@
   <nav v-if="user.loggedIn">
     <div class="container">
       <template v-if="user.loggedIn">
-        <div class="nav-item">Bonjour, {{ username }}</div>
-        <li class="nav-item">
-          <a class="nav-link" @click.prevent="signOut">Déconnexion</a>
-        </li>
+        <div class="navbar">
+          <p>Bonjour,</p>
+          <p class="username">{{ username }}</p>
+          <button type="submit" @click.prevent="signOut">DÉCONNEXION</button>
+        </div>
       </template>
     </div>
   </nav>
@@ -55,3 +56,33 @@ export default {
   }
 };
 </script>
+<style scoped>
+.username {
+  font-weight: bold;
+  font-size: 25px;
+  margin-top: 15px;
+  margin-left: 5px;
+}
+button {
+  background-color: #f44336;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 8px;
+  width: 250px;
+  display: inline-block;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 15px;
+  margin-bottom: 30px;
+  margin-left: auto;
+}
+.navbar {
+  margin-left: 10%;
+  margin-right: 10%;
+  display: flex;
+  justify-content: space-between;
+  color: #8bc34a;
+  font-size: 20px;
+}
+</style>
