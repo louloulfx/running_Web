@@ -3,7 +3,7 @@
     <div class="container">
       <template v-if="user.loggedIn">
         <div class="navbar">
-          <p>Bonjour,</p>
+          <p class="hello">Bonjour,</p>
           <p class="username">{{ username }}</p>
           <button type="submit" @click.prevent="signOut">DÉCONNEXION</button>
         </div>
@@ -57,31 +57,33 @@ export default {
 };
 </script>
 <style scoped>
+.hello {
+  align-self: center;
+}
 .username {
   font-weight: bold;
   font-size: 25px;
-  margin-top: 15px;
   margin-left: 5px;
+  margin-top: 20px;
+  align-self: center;
 }
 button {
   background-color: #f44336;
   border: none;
   border-radius: 5px;
   color: white;
-  padding: 8px;
+  padding: 15px;
   width: 250px;
   display: inline-block;
-  font-size: 13px;
+  font-size: 15px;
   cursor: pointer;
-  margin-top: 15px;
-  margin-bottom: 30px;
   margin-left: auto;
+  align-self: center;
 }
 .navbar {
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: 10rem;
+  margin-right: 10rem;
   display: flex;
-  justify-content: space-between;
   color: #8bc34a;
   font-size: 20px;
 }

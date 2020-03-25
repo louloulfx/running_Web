@@ -1,18 +1,13 @@
 <template>
-  <div class="container" v-if="user.loggedIn">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-body">
-            <div
-              v-for="(user, index) in users"
-              :key="index"
-              class="alert alert-success"
-              role="alert"
-            >
-              {{ user.username }}
-            </div>
-          </div>
+  <div v-if="user.loggedIn">
+    <div>
+      <div v-for="(user, index) in users" :key="index" class="username">
+        <div>
+          <p>{{ user.username }}</p>
+          <p class="courses">4 courses</p>
+        </div>
+        <div class="delete">
+          <img src="../assets/quit.png" alt />
         </div>
       </div>
     </div>
@@ -49,3 +44,27 @@ export default {
   }
 };
 </script>
+<style scoped>
+.username {
+  margin-left: 10rem;
+  margin-right: 10rem;
+  margin-bottom: 20px;
+  display: flex;
+  border: 1px solid #c8c8c8;
+  padding: 5px 25px 5px 25px;
+  color: #121212;
+  border-radius: 5px 50px 5px 50px;
+  font-size: 20px;
+}
+.delete {
+  margin-left: auto;
+  align-self: center;
+}
+.courses {
+  font-weight: bold;
+}
+img {
+  margin-top: 10px;
+  height: 64px;
+}
+</style>
