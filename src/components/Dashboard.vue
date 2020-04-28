@@ -7,7 +7,11 @@
           <p class="courses">{{ user.nbCourses }} Courses</p>
         </div>
         <div class="delete">
-          <img src="../assets/quit.png" alt />
+          <img
+            v-on:click="deleteUser(user.user_id)"
+            src="../assets/quit.png"
+            alt
+          />
         </div>
       </div>
     </div>
@@ -16,18 +20,19 @@
 <script>
 import { mapGetters } from "vuex";
 import firebase from "firebase";
+require("firebase-functions");
 export default {
   computed: {
     ...mapGetters({
-      user: "user"
-    })
+      user: "user",
+    }),
   },
   data() {
     return {
       username: "",
       users: [],
       courses: [],
-      usersUpdate: []
+      usersUpdate: [],
     };
   },
   created() {
@@ -35,8 +40,8 @@ export default {
       .firestore()
       .collection("users")
       .get()
-      .then(snapshot => {
-        snapshot.docs.map(doc => {
+      .then((snapshot) => {
+        snapshot.docs.map((doc) => {
           let array = doc.data();
           array.user_id = doc.id;
           this.users.push(array);
@@ -49,8 +54,8 @@ export default {
       .firestore()
       .collection("courses")
       .get()
-      .then(snapshot => {
-        snapshot.docs.map(doc => {
+      .then((snapshot) => {
+        snapshot.docs.map((doc) => {
           this.courses.push({ user_id: doc.data().user_id });
           this.listCourses();
         });
@@ -72,8 +77,30 @@ export default {
         }
       }
       this.usersUpdate = users;
-    }
-  }
+    },
+    deleteUser(user_id) {
+      console.log(user_id);
+
+      const functions = firebase.functions();
+      // Appel de la fonction présente dans le index.js du dossier functions
+      const deleteUser = functions.httpsCallable("deleteAccount");
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(user_id)
+        .delete()
+        .then(() => {
+          console.log("User deleted");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      deleteUser(user_id).then((result) => {
+        console.log(result);
+        location.reload();
+      });
+    },
+  },
 };
 </script>
 <style scoped>
@@ -96,6 +123,7 @@ export default {
   font-weight: bold;
 }
 img {
+  cursor: pointer;
   margin-top: 10px;
   height: 64px;
 }
