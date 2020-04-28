@@ -1,10 +1,10 @@
 <template>
   <div v-if="user.loggedIn">
     <div>
-      <div v-for="(user, index) in users" :key="index" class="username">
+      <div v-for="(user, index) in usersUpdate" :key="index" class="username">
         <div>
           <p>{{ user.username }}</p>
-          <p class="courses">4 courses</p>
+          <p class="courses">{{ user.nbCourses }} Courses</p>
         </div>
         <div class="delete">
           <img src="../assets/quit.png" alt />
@@ -25,7 +25,9 @@ export default {
   data() {
     return {
       username: "",
-      users: []
+      users: [],
+      courses: [],
+      usersUpdate: []
     };
   },
   created() {
@@ -35,12 +37,42 @@ export default {
       .get()
       .then(snapshot => {
         snapshot.docs.map(doc => {
-          this.users.push(doc.data());
+          let array = doc.data();
+          array.user_id = doc.id;
+          this.users.push(array);
         });
       })
       .catch(function(error) {
         console.log("Error getting document:", error);
       });
+    firebase
+      .firestore()
+      .collection("courses")
+      .get()
+      .then(snapshot => {
+        snapshot.docs.map(doc => {
+          this.courses.push({ user_id: doc.data().user_id });
+          this.listCourses();
+        });
+      })
+      .catch(function(error) {
+        console.log("Error getting document:", error);
+      });
+  },
+  methods: {
+    listCourses() {
+      this.usersUpdate = [];
+      let users = this.users;
+      for (let i = 0; i < users.length; i++) {
+        users[i].nbCourses = 0;
+        for (let j = 0; j < this.courses.length; j++) {
+          if (users[i].user_id === this.courses[j].user_id) {
+            users[i].nbCourses = users[i].nbCourses + 1;
+          }
+        }
+      }
+      this.usersUpdate = users;
+    }
   }
 };
 </script>
