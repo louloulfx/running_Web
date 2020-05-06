@@ -2,16 +2,12 @@
   <div v-if="user.loggedIn">
     <div>
       <div v-for="(user, index) in usersUpdate" :key="index" class="username">
-        <div>
+        <router-link v-bind:to="'/stats/' + user.user_id">
           <p>{{ user.username }}</p>
           <p class="courses">{{ user.nbCourses }} Courses</p>
-        </div>
+        </router-link>
         <div class="delete">
-          <img
-            v-on:click="deleteUser(user.user_id)"
-            src="../assets/quit.png"
-            alt
-          />
+          <img v-on:click="deleteUser(user.user_id)" src="../assets/quit.png" alt />
         </div>
       </div>
     </div>
@@ -24,15 +20,15 @@ require("firebase-functions");
 export default {
   computed: {
     ...mapGetters({
-      user: "user",
-    }),
+      user: "user"
+    })
   },
   data() {
     return {
       username: "",
       users: [],
       courses: [],
-      usersUpdate: [],
+      usersUpdate: []
     };
   },
   created() {
@@ -40,8 +36,8 @@ export default {
       .firestore()
       .collection("users")
       .get()
-      .then((snapshot) => {
-        snapshot.docs.map((doc) => {
+      .then(snapshot => {
+        snapshot.docs.map(doc => {
           let array = doc.data();
           array.user_id = doc.id;
           this.users.push(array);
@@ -54,8 +50,8 @@ export default {
       .firestore()
       .collection("courses")
       .get()
-      .then((snapshot) => {
-        snapshot.docs.map((doc) => {
+      .then(snapshot => {
+        snapshot.docs.map(doc => {
           this.courses.push({ user_id: doc.data().user_id });
           this.listCourses();
         });
@@ -92,15 +88,15 @@ export default {
         .then(() => {
           console.log("User deleted");
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
-      deleteUser(user_id).then((result) => {
+      deleteUser(user_id).then(result => {
         console.log(result);
         location.reload();
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
