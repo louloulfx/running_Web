@@ -2,10 +2,11 @@
   <nav v-if="user.loggedIn">
     <div class="container">
       <template v-if="user.loggedIn">
-        <div class="nav-item" @click.prevent="ys">{{ user.data.uid }}</div>
-        <li class="nav-item">
-          <a class="nav-link" @click.prevent="signOut">Déconnexion</a>
-        </li>
+        <div class="navbar">
+          <p class="hello">Bonjour,</p>
+          <p class="username">{{ username }}</p>
+          <button type="submit" @click.prevent="signOut">DÉCONNEXION</button>
+        </div>
       </template>
     </div>
   </nav>
@@ -20,6 +21,27 @@ export default {
       user: "user"
     })
   },
+  data() {
+    return {
+      username: ""
+    };
+  },
+  updated() {
+    const { currentUser } = firebase.auth();
+    if (currentUser) {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(currentUser.uid)
+        .get()
+        .then(doc => {
+          this.username = doc.data().username;
+        })
+        .catch(function(error) {
+          console.log("Error getting document:", error);
+        });
+    }
+  },
   methods: {
     signOut() {
       firebase
@@ -30,10 +52,39 @@ export default {
             name: "login"
           });
         });
-    },
-    ys() {
-      console.log(this.user.data.uid);
     }
   }
 };
 </script>
+<style scoped>
+.hello {
+  align-self: center;
+}
+.username {
+  font-weight: bold;
+  font-size: 25px;
+  margin-left: 5px;
+  margin-top: 20px;
+  align-self: center;
+}
+button {
+  background-color: #f44336;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 15px;
+  width: 250px;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  margin-left: auto;
+  align-self: center;
+}
+.navbar {
+  margin-left: 10rem;
+  margin-right: 10rem;
+  display: flex;
+  color: #8bc34a;
+  font-size: 20px;
+}
+</style>

@@ -11,17 +11,17 @@ const firebaseConfig = {
   apiKey: "AIzaSyAOOYnYnkVEXDh3lCDXqymuEFWJcNYRPcw",
   authDomain: "runningapp-da94c.firebaseio.com",
   databaseURL: "https://runningapp-da94c.firebaseio.com",
-  storageBucket: "runningapp-da94c.appspot.com"
+  storageBucket: "runningapp-da94c.appspot.com",
 };
 
 firebase.initializeApp(firebaseConfig);
 
-firebase.auth().onAuthStateChanged(user => {
+firebase.auth().onAuthStateChanged((user) => {
   store.dispatch("fetchUser", user);
 });
 
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");
