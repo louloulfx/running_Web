@@ -123,4 +123,9 @@ img {
   margin-top: 10px;
   height: 64px;
 }
+
+a {
+  text-decoration: none;
+  color: black;
+}
 </style>
